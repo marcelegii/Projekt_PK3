@@ -92,7 +92,8 @@ void MainClass::mainLoop(int argc, char  **argv)
 	}
 
 	howManyfilesInCatalog(catalogPath);
-	loadFromFile(catalogPath);
+	loadHolidaysFromFile(catalogPath);
+	loadTripsFromFile(catalogPath);
 
 
 	/*read from file to array and set objects values
@@ -107,7 +108,7 @@ void MainClass::stringToDate(string myDate, vector<Holidays>::iterator& it)
 	string l;
 	int counter = 0;
 	istringstream iss(myDate); // to getLine from istringstream
-	while (getline(iss, l, '.')) {
+	while (getline(iss, l, '.')) { // skip char'.' 
 		++counter;
 		switch (counter) {
 		case 1:
@@ -129,6 +130,66 @@ void MainClass::stringToDate(string myDate, vector<Holidays>::iterator& it)
 		
 	
 		
+	}
+}
+
+void MainClass::stringToDate(string myDate, vector<Trip>::iterator & it, int checker)
+{
+	string l;
+	int counter = 0;
+	istringstream iss(myDate); // to getLine from istringstream
+	if (checker == 0) {
+		while (getline(iss, l, '.')) { // skip char'.' 
+			++counter;
+			switch (counter) {
+			case 1:
+				it->setYearStart(stoi(l));
+				break;
+
+			case 2:
+				it->setMonthStart(stoi(l));
+				break;
+
+			case 3:
+				it->setDayStart(stoi(l));
+				break;
+
+			default:
+				std::cout << "error." << endl;
+				break;
+			}
+
+
+
+		}
+	}
+
+
+
+	if (checker == 1) {
+		while (getline(iss, l, '.')) { // skip char'.' 
+			++counter;
+			switch (counter) {
+			case 1:
+				it->setYearEnd(stoi(l));
+				break;
+
+			case 2:
+				it->setMonthEnd(stoi(l));
+				break;
+
+			case 3:
+				it->setDayEnd(stoi(l));
+				break;
+
+			default:
+				std::cout << "error." << endl;
+				break;
+			}
+
+
+
+		}
 	}
 }
 
@@ -168,7 +229,7 @@ void MainClass::howManyfilesInCatalog(string myPath) {
 
 }
 
-void MainClass::loadFromFile(string myPath)
+void MainClass::loadHolidaysFromFile(string myPath)
 {
 	string _myPath = " ";
 	string line;
@@ -184,7 +245,7 @@ void MainClass::loadFromFile(string myPath)
 	for (auto &tab : holidayFiles) {			//reference to, not create a copy
 
 		if (it != holiday.end()) {
-			_myPath += tab;				 //path to the holidaysFile
+			_myPath += tab;				 //path to the tripFile
 			ifs.open(_myPath);           // none value to return
 
 			if (!ifs.is_open()) {
@@ -194,7 +255,7 @@ void MainClass::loadFromFile(string myPath)
 				int switcher = 0;
 				cout << "file " << tab << " is opened ok" << endl;
 				while (getline(ifs, line)) {
-					
+
 					it->pushToVector(line);
 
 					switcher++;
@@ -204,29 +265,148 @@ void MainClass::loadFromFile(string myPath)
 						break;
 					case 2:
 						stringToDate(line, it); // convert string and set date in object
-						cout << *it << endl;
 						break;
 					case 3:
-						it->sstoi(line);
+						it->setDuaration(stoi(line));
 						break;
 					case 4:
+						it->setCity(line);
 						break;
 					case 5:
+						it->setCountry(line);
 						break;
 					case 6:
+						it->setHolidayPrize(stringToInt(line));
 						break;
 					case 7:
+						it->setAutocarPrize(PrizeToInt(line));
 						break;
 					case 8:
+						it->setPlanePrize(PrizeToInt(line));
 						break;
 					}
+
 				}
-				
+
 			}
+			cout << *it << endl;
 			it++;
 		}
 		//ifs.close();
+
+	}
+	
+}
+
+
+void MainClass::loadTripsFromFile(string myPath)
+{
+	string _myPath = " ";
+	string line;
+	std::ifstream ifs;
+
+
+	_myPath = myPath + "/";
+	trip.reserve(trip.capacity()); //realocate size of trip
+	for (auto &tab : tripFiles) trip.push_back(Trip()); // fill vector
+
+	std::vector<Trip>::iterator it = trip.begin(); //iterator to trip vector
+
+	for (auto &tab : tripFiles) {			//reference to, not create a copy
+
+		if (it != trip.end()) {
+			_myPath += tab;				 //path to the tripsFile
+			ifs.open(_myPath);           // none value to return
+
+			if (!ifs.is_open()) {
+				cout << " Failed to open " << tab << endl;
+			}
+			else {
+				int switcher = 0;
+				cout << "file " << tab << " is opened ok" << endl;
+				while (getline(ifs, line)) {
+
+					it->pushToVector(line);
+
+					switcher++;
+					switch (switcher) {
+					case 1:
+						it->setName(line);
+						break;
+					case 2:
+						stringToDate(line, it,0); // convert string and set date in object
+						break;
+					case 3:
+						stringToDate(line, it, 1);
+						break;
+					case 4:
+						//wdup do wektora
+						break;
+					case 5:
+						it->setPrize(stringToInt(line));
+						break;
+					case 6:
+						it->setTransport((line));
+						break;
+
+					}
+
+				}
+
+			}
+			cout << *it << endl;
+			it++;
+		}
+		//ifs.close();
+
 	}
 
+
+}
+
+int MainClass::stringToInt(string s)
+{
+	int d;
+	istringstream iss(s);
+	string t;
+	while (getline(iss, t, 'P')) {// skip char 'P' 
+		try {
+			
+			stoi(t);
+			
+		}
+		catch (std::invalid_argument&) {
+			continue;
+		}
+		d = stoi(t);
+		cout << "d=" << d << endl;
+	}
+	
+	return  d;
+}
+
+int MainClass::PrizeToInt(string s)
+{
+	istringstream iss(s);
+	string t;
+	int d;
+	iss >> t >> t; // to get prize from string, e.g. 2000PLN from "Autokar 2000PLN"
+	iss.clear();
+	iss.str(t);
+	while (getline(iss, t, 'P')) {// skip char 'P' 
+		try {
+			
+			stoi(t);
+
+		}
+		catch (std::invalid_argument&) {
+			continue;
+		}
+		d = stoi(t);
+		
+	}
+
+	return  d;
+	
 }
 

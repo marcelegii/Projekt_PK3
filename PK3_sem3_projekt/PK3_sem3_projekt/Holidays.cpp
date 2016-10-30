@@ -6,14 +6,16 @@
 
 Holidays::Holidays()
 {
-	string name=" ";
-	int day_start=0;
-	int month_start=0;
-	int yea_start=0;
-	int duration=0;// how long is your holidays?	 
-	double holiday_prize=0.0;
-	double autocar_prize=0.0;
-	double plane_prize=0.0;
+	 name="empty";
+	 day_start=0;
+	 month_start=0;
+	 year_start=0;
+	 duration=0;// how long is your holidays?	
+	 city = "empty";
+	 country = "empty";
+	 holiday_prize=0;
+	 autocar_prize=0;
+	 plane_prize=0;
 }
 
 Holidays::~Holidays()
@@ -47,6 +49,16 @@ Holidays::~Holidays()
 	duration = d;
 }
 
+ void Holidays::setCity(string c)
+ {
+	 city = c;
+ }
+
+ void Holidays::setCountry(string c)
+ {
+	 country = c;
+ }
+
  void Holidays::setHolidayPrize(int h)
 {
 	holiday_prize = h;
@@ -70,8 +82,12 @@ Holidays::~Holidays()
 ostream & operator<<(ostream & out, Holidays & a)
 {
 	out << a.name << endl;
-	out << a.day_start << endl;
-	out << a.month_start<<endl;
-	out << a.year_start << endl;
+	out << a.year_start <<"."<< a.month_start <<"."<<a.day_start << endl;
+	out << a.duration << endl;
+	out << a.city << endl;
+	out << a.country << endl;
+	out << "Holiday prize: "<<a.holiday_prize << endl;
+	out << "Autocar prize: " << a.autocar_prize << endl;
+	out << "Plane prize: " << a.plane_prize << endl;
 	return out;
 }

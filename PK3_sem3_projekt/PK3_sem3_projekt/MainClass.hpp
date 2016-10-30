@@ -27,9 +27,13 @@ private:
 	vector<string> linesFromFile;
 
 	void stringToDate(string, vector<Holidays>::iterator&);
+	void stringToDate(string, vector<Trip>::iterator&,int);
 	void howManyfilesInCatalog(string);
-	void loadFromFile(string);
-	
+	void loadHolidaysFromFile(string);
+	void loadTripsFromFile(string);
+	int stringToInt(string);
+
+	int PrizeToInt(string);
 
 public:
 	MainClass();

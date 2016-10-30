@@ -14,10 +14,12 @@ private:
 	int day_start;
 	int month_start;
 	int year_start;
-	int duration;// how long is your holidays?	 
-	double holiday_prize;
-	double autocar_prize;
-	double plane_prize;
+	int duration;// how long is your holidays?
+	string city;
+	string country;
+	int holiday_prize;
+	int autocar_prize;
+	int plane_prize;
 	vector<string> dataInObject= vector<string> (20); // data from file holiday.txt
 
 public:
@@ -35,6 +37,8 @@ public:
 	 void setMonthStart(int);
 	 void setYearStart(int);
 	 void setDuaration(int);
+	 void setCity(string);
+	 void setCountry(string);
 	 void setHolidayPrize(int);
 	 void setAutocarPrize(int);
 	 void setPlanePrize(int);
