@@ -6,6 +6,7 @@
 #include <sstream>
 #include<boost/filesystem.hpp>
 #include <fstream>
+#include <typeinfo>
 #include"./Holidays.hpp"
 #include"./Trip.hpp"
 
@@ -20,19 +21,28 @@ private:
 	static MainClass* instance;
 	int holidayInCatalog; 
 	int tripInCatalog;
+	int day, month, year;
+	string type;
+	int duartion;
+	int maxPrize;
+
 	vector<string> tripFiles; // names of tripFiles
 	vector<string> holidayFiles;// names of holidayFiles
 	vector<Holidays> holiday;
 	vector<Trip> trip; 
 	vector<string> linesFromFile;
+	vector<string> toOutput;
 
 	void stringToDate(string, vector<Holidays>::iterator&);
 	void stringToDate(string, vector<Trip>::iterator&,int);
+	void stringToDate(string);
 	void howManyfilesInCatalog(string);
 	void loadHolidaysFromFile(string);
 	void loadTripsFromFile(string);
+	bool toDataValidation(Trip&);
+	bool toDataValidation(Holidays & it);
+	void dataValidation();
 	int stringToInt(string);
-
 	int PrizeToInt(string);
 
 public:

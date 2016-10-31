@@ -5,6 +5,7 @@
 Trip::Trip()
 {
 	name = "empty";
+	place = "emoty";
 	day_start = 0;
 	month_start = 0;
 	year_start = 0;
@@ -72,10 +73,80 @@ void Trip::pushToVector(string s)
 	dataInObject.push_back(s);
 }
 
+void Trip::setPlaceToVisit(string s)
+{
+	place = s;
+	istringstream iss(s);
+	istringstream iss_temp;
+	string t="";
+	string d = "";
+	while (getline(iss, t, ',')) {
+		iss_temp.clear();
+		iss_temp.str(t);
+			
+			iss_temp >> d;
+			countryToVisit.push_back(d);
+			iss_temp >> d;
+			d.erase(0, 1); // erase '['
+			d.erase(d.size()-1, 1); // erase ']'
+			cityToVisit.push_back(d);
+			
+
+
+		
+		
+		
+	}
+
+	
+
+}
+
+string Trip::getName()
+{
+	return name;
+}
+
+int Trip::getDayStart()
+{
+	return day_start;
+}
+
+int Trip::getMonthStart()
+{
+	return month_start;
+}
+
+int Trip::getYearStart()
+{
+	return year_start;
+}
+
+int Trip::getDayEnd()
+{
+	return day_end;
+}
+
+int Trip::getMonthEnd()
+{
+	return month_end;
+}
+
+int Trip::getYearEnd()
+{
+	return year_end;
+}
+
+int Trip::getPrize()
+{
+	return prize;
+}
+
 ostream & operator<<(ostream & out, Trip & a)
 {
 	out << a.name << endl;
 	out << a.year_start << "." << a.month_start << "." << a.day_start << endl;
+	out << a.place << endl;
 	out << "prize: " << a.prize << endl;
 	out << "transport: " << a.transport << endl;
 	return out;

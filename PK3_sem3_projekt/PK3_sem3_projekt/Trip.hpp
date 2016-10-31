@@ -1,7 +1,7 @@
 #pragma once
 #include<iostream>
 #include<string>
-#include<time.h>
+#include<sstream>
 #include<vector>
 using namespace std;
 
@@ -16,9 +16,11 @@ private:
 	int day_end; // trip end;
 	int month_end;
 	int year_end;
-	vector<string> toVisit; // place to visit
-	string transport;
 	int prize;
+	string place;
+	vector<string> countryToVisit ;
+	vector<string> cityToVisit;
+	string transport;
 	
 	vector<string> dataInObject = vector<string>(20); //without vector toVisit
 public:
@@ -36,6 +38,16 @@ public:
 	void setPrize(int);
 	void setTransport(string);
 	void pushToVector(string);
+	void setPlaceToVisit(string);
+	string getName();
+	int getDayStart();
+	int getMonthStart();
+	int getYearStart();
+	int getDayEnd();
+	int getMonthEnd();
+	int getYearEnd();
+
+	int getPrize();
 	friend ostream&  operator<<(ostream& out, Trip & a);
 };
 

@@ -5,8 +5,15 @@ MainClass* MainClass::instance;
 
 MainClass::MainClass()
 {
-	holidayInCatalog = 0;
-	tripInCatalog = 0;
+	 holidayInCatalog = 0;
+	 tripInCatalog = 0;
+	 day = 0; 
+	 month = 0;
+	 year = 0;
+	 type=' ';
+	 duartion = 0;;
+	 maxPrize = 0;;
+
 }
 
 
@@ -49,36 +56,50 @@ void MainClass::mainLoop(int argc, char  **argv)
 				case 'k':
 					//catalog
 					catalogPath = argv[i + 1]; // catalog path
-
+					
 
 					break;
 				case 'o':
 					//set output filename
 
+
 					break;
 				case 'r':
 					//type of trip
-
+					type = argv[i + 1];
 					break;
 				case 't':
 					//date
-
+					stringToDate(argv[i + 1]);
 
 					break;
 				case 'd':
 					//lenght of trip
-
+					try {
+						duartion = stoi(argv[i + 1]);
+					}
+					catch (std::invalid_argument&) {
+						cout << "error 404!" << endl;
+						::exit(1);
+					}
 
 					break;
 				case 'c':
 					//max prize
+					try {
+						maxPrize = stoi(argv[i + 1]);
+					}
+					catch (std::invalid_argument&) {
+						cout << "error 404!" << endl;
+						::exit(1);
+					}
 
 					break;
 
 
 				default:
-					cout << "Wrong parametr in main function. Exit program" << endl;
-					exit(1);
+					cout << "Wrong parametr in main function. ::exit program" << endl;
+					::exit(1);
 					break;
 
 				}
@@ -87,14 +108,14 @@ void MainClass::mainLoop(int argc, char  **argv)
 		}
 	}
 	else {
-		cout << "Wrong parametr in main function. Exit program" << endl;
-		exit(1);
+		cout << "Wrong parametr in main function. ::exit program" << endl;
+		::exit(1);
 	}
 
 	howManyfilesInCatalog(catalogPath);
 	loadHolidaysFromFile(catalogPath);
 	loadTripsFromFile(catalogPath);
-
+	dataValidation();
 
 	/*read from file to array and set objects values
 	if WP in name --> Holidays*/
@@ -190,6 +211,54 @@ void MainClass::stringToDate(string myDate, vector<Trip>::iterator & it, int che
 
 
 		}
+	}
+}
+
+void MainClass::stringToDate(string myDate)
+{
+	string l;
+	int counter = 0;
+	istringstream iss(myDate); // to getLine from istringstream
+	while (getline(iss, l, '.')) { // skip char'.' 
+		++counter;
+		switch (counter) {
+		case 1:
+			try {
+				year = stoi(l);
+			}
+			catch (std::invalid_argument&) {
+				cout << "error. ::exit program" << endl;
+				::exit(1);
+			}
+			break;
+
+		case 2:
+			try {
+				month = stoi(l);
+			}
+			catch (std::invalid_argument&) {
+				cout << "error. ::exit program" << endl;
+				::exit(1);
+			}
+			break;
+
+		case 3:
+			try {
+				day = stoi(l);
+			}
+			catch (std::invalid_argument&) {
+				cout << "error. ::exit program" << endl;
+				::exit(1);
+			}
+			break;
+
+		default:
+			std::cout << "error." << endl;
+			break;
+		}
+
+
+
 	}
 }
 
@@ -289,7 +358,7 @@ void MainClass::loadHolidaysFromFile(string myPath)
 				}
 
 			}
-			cout << *it << endl;
+			//cout << *it << endl;
 			it++;
 		}
 		//ifs.close();
@@ -340,7 +409,7 @@ void MainClass::loadTripsFromFile(string myPath)
 						stringToDate(line, it, 1);
 						break;
 					case 4:
-						//wdup do wektora
+						it->setPlaceToVisit(line);
 						break;
 					case 5:
 						it->setPrize(stringToInt(line));
@@ -354,7 +423,7 @@ void MainClass::loadTripsFromFile(string myPath)
 				}
 
 			}
-			cout << *it << endl;
+		//	cout << *it << endl;
 			it++;
 		}
 		//ifs.close();
@@ -362,6 +431,71 @@ void MainClass::loadTripsFromFile(string myPath)
 	}
 
 
+}
+
+bool MainClass::toDataValidation(Trip &it)
+{
+	
+	if (year <= it.getYearStart() && month <= it.getMonthStart() && day <= it.getDayStart()) return true;
+	else return false;
+	
+	
+}
+
+bool MainClass::toDataValidation(Holidays &it)
+{
+
+	if (year <= it.getYearStart() && month <= it.getMonthStart() && day <= it.getDayStart()) return true;
+	else return false;
+
+
+}
+
+void MainClass::dataValidation()
+{
+	
+	char switcher = type[0];
+	switch (switcher) {
+	case 'o':
+		for (auto & it : trip) {
+			if (  ( maxPrize >= it.getPrize()) && toDataValidation(it)==true && ( "WO: Dookola"==it.getName() )  ) {
+				std::cout << "Trips: " << endl;
+				cout << it << endl;
+			}
+		}
+		
+		break;
+
+	case 'p':
+		break;
+
+	case 'l':
+		break;
+
+	case 'd':
+		for (auto & it : trip) {
+			if (maxPrize >= it.getPrize() && toDataValidation(it) == true ) {
+				std::cout << "Trips: " << endl;
+				cout << it << endl;
+			}
+		}
+
+			for (auto & it : holiday) {
+				if (maxPrize >= (it.getAutocarPrize() + it.getHolidayPrize()  )  || maxPrize > (it.getPlanePrize() + it.getHolidayPrize()) && toDataValidation(it) == true) {
+					std::cout << "Holidays: " << endl;
+					cout << it << endl;
+				}
+		}
+		break;
+
+	default:
+		cout << "Wrong parameters. ::exit the program" << endl;
+		//::exit(1);
+		break;
+	}
+	
+	
+	
 }
 
 int MainClass::stringToInt(string s)

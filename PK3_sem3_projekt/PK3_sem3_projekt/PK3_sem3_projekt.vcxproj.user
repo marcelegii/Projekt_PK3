@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LocalDebuggerCommandArguments>-k "C:/Users/Marcel/Dropbox/Github/Projekt_PK3/PK3_final/Test" -o lol -r kkk -t fg -d hh -c lol</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-k "C:/Users/Marcel/Dropbox/Github/Projekt_PK3/PK3_final/Test" -o lol -r d -t 2013.10.11 -d 7 -c 2500</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LocalDebuggerCommandArguments>-k "C:/Users/Marcel/Dropbox/Github/Projekt_PK3/PK3_final/Test" -o lol -r kkk -t fg -d hh -c lol</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-k "C:/Users/Marcel/Dropbox/Github/Projekt_PK3/PK3_final/Test" -o lol -r d -t 2013.10.11 -d 7 -c 2500</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>-k "C:/Users/Marcel/Dropbox/Github/Projekt_PK3/PK3_final/Test" -o lol -r kkk -t fg -d hh -c lol</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-k "C:/Users/Marcel/Dropbox/Github/Projekt_PK3/PK3_final/Test" -o lol -r d -t 2013.10.11 -d 7 -c 2500</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>-k "C:/Users/Marcel/Dropbox/Github/Projekt_PK3/PK3_final/Test" -o lol -r kkk -t fg -d hh -c lol</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-k "C:/Users/Marcel/Dropbox/Github/Projekt_PK3/PK3_final/Test" -o lol -r d -t 2013.10.11 -d 7 -c 2500</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

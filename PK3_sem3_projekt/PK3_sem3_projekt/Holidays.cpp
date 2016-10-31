@@ -74,6 +74,11 @@ Holidays::~Holidays()
 	plane_prize = p;
 }
 
+ string Holidays::getName()
+ {
+	 return name;
+ }
+
  void Holidays::pushToVector(string s)
  {
 	 dataInObject.push_back(s);
@@ -90,4 +95,34 @@ ostream & operator<<(ostream & out, Holidays & a)
 	out << "Autocar prize: " << a.autocar_prize << endl;
 	out << "Plane prize: " << a.plane_prize << endl;
 	return out;
+}
+
+int Holidays::getDayStart()
+{
+	return day_start;
+}
+
+int Holidays::getMonthStart()
+{
+	return month_start;
+}
+
+int Holidays::getYearStart()
+{
+	return year_start;
+}
+
+int Holidays::getHolidayPrize()
+{
+	return holiday_prize;
+}
+
+int Holidays::getAutocarPrize()
+{
+	return autocar_prize;
+}
+
+int Holidays::getPlanePrize()
+{
+	return plane_prize;
 }

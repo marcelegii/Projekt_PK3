@@ -42,7 +42,19 @@ public:
 	 void setHolidayPrize(int);
 	 void setAutocarPrize(int);
 	 void setPlanePrize(int);
+	 string getName();
+	 int getDayStart();
+	 int getMonthStart();
+	 int getYearStart();
+	 int getDuaration();
+	 int getCity();
+	 int getCountry();
+	 int getHolidayPrize();
+	 int getAutocarPrize();
+	 int getPlanePrize();
+
 	 void pushToVector(string);
+
 	friend ostream&  operator<<(ostream& out, Holidays & a);
 		
 };
