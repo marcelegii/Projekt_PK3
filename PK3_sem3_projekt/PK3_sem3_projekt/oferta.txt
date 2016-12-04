@@ -1,0 +1,10 @@
+1. WO: Dookola (Autokar )
+Kraje: Algieria 
+Miejscowosci: Algier 
+Koszt: 10
+Termin: 2013.12.1-2013.12.7
+2. WO: Brazylia (Autokar )
+Kraje: Brazylia 
+Miejscowosci: Rio 
+Koszt: 10
+Termin: 2013.11.2-2013.11.7

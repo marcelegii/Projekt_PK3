@@ -3,6 +3,7 @@
 #include<string>
 #include<sstream>
 #include<vector>
+#include"Holidays.hpp"
 using namespace std;
 
 class Trip
@@ -46,8 +47,10 @@ public:
 	int getDayEnd();
 	int getMonthEnd();
 	int getYearEnd();
-
 	int getPrize();
+	string getLastCountry();
 	friend ostream&  operator<<(ostream& out, Trip & a);
+	bool operator<( Holidays &a); //compare if holidays are after trip
+	void toOutputFile(string filename, int lines);
 };
 

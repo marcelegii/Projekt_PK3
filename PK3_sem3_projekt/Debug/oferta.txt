@@ -1,0 +1,15 @@
+1. WO: Dookola (Autokar )
+Kraje: Czechy Austria 
+Miejscowosci: Brno Wieden 
+Koszt: 20
+Termin: 2013.11.11-2013.11.21
+2. WO: Dookola (Autokar )
+Kraje: Algieria 
+Miejscowosci: Algier 
+Koszt: 10
+Termin: 2013.12.1-2013.12.7
+3. WO: Brazylia (Autokar )
+Kraje: Brazylia 
+Miejscowosci: Rio 
+Koszt: 10
+Termin: 2013.11.2-2013.11.7

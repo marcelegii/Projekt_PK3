@@ -112,6 +112,21 @@ int Holidays::getYearStart()
 	return year_start;
 }
 
+int Holidays::getDuaration()
+{
+	return duration;
+}
+
+string Holidays::getCity()
+{
+	return city;
+}
+
+string Holidays::getCountry()
+{
+	return country;
+}
+
 int Holidays::getHolidayPrize()
 {
 	return holiday_prize;
@@ -125,4 +140,35 @@ int Holidays::getAutocarPrize()
 int Holidays::getPlanePrize()
 {
 	return plane_prize;
+}
+
+void Holidays::toOutputFile(string filename,int lines)
+{
+	
+	if (lines == 1) { // clear file
+
+		std::ofstream outFile(filename, std::ofstream::trunc);
+		if (!outFile.is_open()) {
+			cout << "error" << endl;
+			exit(1);
+		}
+		outFile.close();
+	}
+	
+	std::ofstream outFile(filename, std::ofstream::out| std::ofstream::app);
+	if (!outFile.is_open()) {
+		cout << "error" << endl;
+		exit(1);
+	}
+
+	else {
+		outFile << lines <<". "<< name << endl;
+		outFile << "Kraje: " << country << endl;
+		outFile << "Miejscowosc: " << city << endl;
+		outFile << "Koszt: " << holiday_prize + autocar_prize << " (Autokar)" << endl;
+		outFile << "Koszt: " << holiday_prize + plane_prize << " (Plane)" << endl;
+		outFile << "Termin: " << year_start << "." << month_start << "." << day_start << endl<<endl;
+
+		outFile.close();
+	}
 }

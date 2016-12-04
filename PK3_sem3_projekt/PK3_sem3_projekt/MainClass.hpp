@@ -11,6 +11,8 @@
 #include"./Trip.hpp"
 
 
+
+
 using namespace std;
 using namespace boost::filesystem;
 
@@ -23,7 +25,8 @@ private:
 	int tripInCatalog;
 	int day, month, year;
 	string type;
-	int duartion;
+	string outputFile;
+	int duration;
 	int maxPrize;
 
 	vector<string> tripFiles; // names of tripFiles
@@ -39,8 +42,9 @@ private:
 	void howManyfilesInCatalog(string);
 	void loadHolidaysFromFile(string);
 	void loadTripsFromFile(string);
-	bool toDataValidation(Trip&);
-	bool toDataValidation(Holidays & it);
+	bool toDateValidation(Trip&);
+	bool toDateValidation(Holidays & it);
+	int countTripDuration(Trip&);
 	void dataValidation();
 	int stringToInt(string);
 	int PrizeToInt(string);

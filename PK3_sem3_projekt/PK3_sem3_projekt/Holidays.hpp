@@ -1,5 +1,7 @@
 #pragma once
 #include<iostream>
+#include<fstream>
+#include<sstream>
 #include<string>
 #include<vector>
 
@@ -47,11 +49,12 @@ public:
 	 int getMonthStart();
 	 int getYearStart();
 	 int getDuaration();
-	 int getCity();
-	 int getCountry();
+	 string getCity();
+	 string getCountry();
 	 int getHolidayPrize();
 	 int getAutocarPrize();
 	 int getPlanePrize();
+	 void toOutputFile(string,int);
 
 	 void pushToVector(string);
 

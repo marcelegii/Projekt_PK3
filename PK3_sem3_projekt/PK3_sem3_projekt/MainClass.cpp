@@ -5,14 +5,14 @@ MainClass* MainClass::instance;
 
 MainClass::MainClass()
 {
-	 holidayInCatalog = 0;
-	 tripInCatalog = 0;
-	 day = 0; 
-	 month = 0;
-	 year = 0;
-	 type=' ';
-	 duartion = 0;;
-	 maxPrize = 0;;
+	holidayInCatalog = 0;
+	tripInCatalog = 0;
+	day = 0;
+	month = 0;
+	year = 0;
+	type = ' ';
+	duration = 0;;
+	maxPrize = 0;;
 
 }
 
@@ -41,10 +41,10 @@ void MainClass::freePointer(void)
 void MainClass::mainLoop(int argc, char  **argv)
 {
 	string catalogPath = " ";
-
-
-
 	const int letterInWord = 1;
+	
+
+	
 	cout << "argc=" << argc << endl;
 	if (argc == 13) {
 
@@ -56,12 +56,12 @@ void MainClass::mainLoop(int argc, char  **argv)
 				case 'k':
 					//catalog
 					catalogPath = argv[i + 1]; // catalog path
-					
+
 
 					break;
 				case 'o':
 					//set output filename
-
+					outputFile = argv[i + 1];
 
 					break;
 				case 'r':
@@ -76,7 +76,7 @@ void MainClass::mainLoop(int argc, char  **argv)
 				case 'd':
 					//lenght of trip
 					try {
-						duartion = stoi(argv[i + 1]);
+						duration = stoi(argv[i + 1]);
 					}
 					catch (std::invalid_argument&) {
 						cout << "error 404!" << endl;
@@ -111,14 +111,13 @@ void MainClass::mainLoop(int argc, char  **argv)
 		cout << "Wrong parametr in main function. ::exit program" << endl;
 		::exit(1);
 	}
-
+	
 	howManyfilesInCatalog(catalogPath);
+	if (type != "o")
 	loadHolidaysFromFile(catalogPath);
+	if (type != "p")
 	loadTripsFromFile(catalogPath);
 	dataValidation();
-
-	/*read from file to array and set objects values
-	if WP in name --> Holidays*/
 
 
 }
@@ -148,9 +147,9 @@ void MainClass::stringToDate(string myDate, vector<Holidays>::iterator& it)
 			std::cout << "error." << endl;
 			break;
 		}
-		
-	
-		
+
+
+
 	}
 }
 
@@ -312,7 +311,7 @@ void MainClass::loadHolidaysFromFile(string myPath)
 	std::vector<Holidays>::iterator it = holiday.begin(); //iterator to holiday vector
 
 	for (auto &tab : holidayFiles) {			//reference to, not create a copy
-
+		_myPath = myPath + "/";
 		if (it != holiday.end()) {
 			_myPath += tab;				 //path to the tripFile
 			ifs.open(_myPath);           // none value to return
@@ -356,15 +355,17 @@ void MainClass::loadHolidaysFromFile(string myPath)
 					}
 
 				}
-
+				
+				it++;
 			}
-			//cout << *it << endl;
-			it++;
+			
 		}
-		//ifs.close();
+		
+		ifs.clear();
+		ifs.close();
 
 	}
-	
+
 }
 
 
@@ -382,7 +383,7 @@ void MainClass::loadTripsFromFile(string myPath)
 	std::vector<Trip>::iterator it = trip.begin(); //iterator to trip vector
 
 	for (auto &tab : tripFiles) {			//reference to, not create a copy
-
+		_myPath = myPath + "/";
 		if (it != trip.end()) {
 			_myPath += tab;				 //path to the tripsFile
 			ifs.open(_myPath);           // none value to return
@@ -403,10 +404,10 @@ void MainClass::loadTripsFromFile(string myPath)
 						it->setName(line);
 						break;
 					case 2:
-						stringToDate(line, it,0); // convert string and set date in object
+						stringToDate(line, it, 0); // convert string and set date in object , 0--> set start date
 						break;
 					case 3:
-						stringToDate(line, it, 1);
+						stringToDate(line, it, 1); //1--> set end date
 						break;
 					case 4:
 						it->setPlaceToVisit(line);
@@ -423,99 +424,215 @@ void MainClass::loadTripsFromFile(string myPath)
 				}
 
 			}
-		//	cout << *it << endl;
+			
 			it++;
 		}
-		//ifs.close();
+		ifs.clear();
+		ifs.close();
 
 	}
 
 
 }
 
-bool MainClass::toDataValidation(Trip &it)
+bool MainClass::toDateValidation(Trip &it) //check if trip is actuall
 {
-	
-	if (year <= it.getYearStart() && month <= it.getMonthStart() && day <= it.getDayStart()) return true;
-	else return false;
-	
-	
+	if (year == it.getYearStart() && month <= it.getMonthStart() && day <= it.getDayStart()) return true;
+	if (year < it.getYearStart()) return true;
+
+	return false;
+
+
 }
 
-bool MainClass::toDataValidation(Holidays &it)
+bool MainClass::toDateValidation(Holidays &it) //check if trip is actuall
 {
-
+	if (year < it.getYearStart()) return true;
 	if (year <= it.getYearStart() && month <= it.getMonthStart() && day <= it.getDayStart()) return true;
-	else return false;
+	
+
+	return false;
+
+}
+int MainClass::countTripDuration(Trip& it)
+{
+	//if (it.getYearStart() == it.getYearEnd())
+	if (it.getMonthStart() == it.getMonthEnd()) {  
+		return (it.getDayEnd() - it.getDayStart());
+	}
+	else { // max 1 month trip
+
+		switch (it.getMonthStart())
+		{
+		case 1:
+			return (31 - it.getDayStart()) + it.getDayEnd();
+			break;
+
+		case 2:
+			if (year % 4 == false && year % 100 != false || year % 400 == false) {
+				return (29 - it.getDayStart()) + it.getDayEnd();
+			}
+			else {
+
+				return (28 - it.getDayStart()) + it.getDayEnd();
+			}
+			break;
+
+		case 3:
+			return (31 - it.getDayStart()) + it.getDayEnd();
+			break;
+
+		case 4:
+			return (30 - it.getDayStart()) + it.getDayEnd();
+			break;
+
+		case 5:
+			return (31 - it.getDayStart()) + it.getDayEnd();
+			break;
+
+		case 6:
+			return (30 - it.getDayStart()) + it.getDayEnd();
+			break;
+
+		case 7:
+			return (31 - it.getDayStart()) + it.getDayEnd();
+			break;
+		case 8:
+			return (31 - it.getDayStart()) + it.getDayEnd();
+			break;
+
+		case 9:
+			return (30 - it.getDayStart()) + it.getDayEnd();
+			break;
+
+		case 10:
+			return (31 - it.getDayStart()) + it.getDayEnd();
+			break;
+
+		case 11:
+			return (30 - it.getDayStart()) + it.getDayEnd();
+			break;
+
+		case 12:
+			return (31 - it.getDayStart()) + it.getDayEnd();
+			break;
 
 
+		}
+	}
+
+	return 0;
 }
 
 void MainClass::dataValidation()
 {
-	
+	int numberofLinesInFile = 1; // lines in outputfile
 	char switcher = type[0];
 	switch (switcher) {
 	case 'o':
 		for (auto & it : trip) {
-			if (  ( maxPrize >= it.getPrize()) && toDataValidation(it)==true && ( "WO: Dookola"==it.getName() )  ) {
+			if ((maxPrize >= it.getPrize()) && toDateValidation(it) == true && ("WO: Dookola" == it.getName()) &&
+				countTripDuration(it) <= duration) {
 				std::cout << "Trips: " << endl;
 				cout << it << endl;
+				it.toOutputFile(outputFile,numberofLinesInFile);
+				numberofLinesInFile++;
+				
 			}
 		}
-		
+
 		break;
 
 	case 'p':
+		for (auto & it : holiday) {
+			if (maxPrize >= (it.getAutocarPrize() + it.getHolidayPrize()) || maxPrize > (it.getPlanePrize() + it.getHolidayPrize())
+				&& toDateValidation(it) == true
+				&& it.getDuaration() <= duration) {
+				std::cout << "Holidays: " << endl;
+				//cout << it << endl;
+				it.toOutputFile(outputFile,numberofLinesInFile);
+				numberofLinesInFile++;
+			}
+		}
 		break;
 
 	case 'l':
+		for (auto & it : trip) {
+			
+			for (auto & h : holiday) {
+				
+				if ((it<h)==true && (maxPrize >= (h.getAutocarPrize() + h.getHolidayPrize() + it.getPrize()) || maxPrize >(h.getPlanePrize() + h.getHolidayPrize() + it.getPrize() )	)) {
+					if (toDateValidation(it) == true) { // to musi byc, porownanie z data podana przez uzytkownika z konsoli
+						//std::cout << "Trips: " << endl;
+						//cout << it << endl;
+						//std::cout << "Holidays: " << endl;
+						it.toOutputFile(outputFile, numberofLinesInFile);
+						numberofLinesInFile++;
+						h.toOutputFile(outputFile, numberofLinesInFile);
+						numberofLinesInFile++;
+					//	std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
+					}
+					
+				}
+				
+			}
+			
+		}
+
 		break;
 
 	case 'd':
-		for (auto & it : trip) {
-			if (maxPrize >= it.getPrize() && toDataValidation(it) == true ) {
-				std::cout << "Trips: " << endl;
+		
+		for (auto & it : holiday) {
+			if (maxPrize >= (it.getAutocarPrize() + it.getHolidayPrize()) || maxPrize > (it.getPlanePrize() + it.getHolidayPrize()) && toDateValidation(it) == true) {
+				std::cout << "Holidays: " << endl;
 				cout << it << endl;
+				it.toOutputFile(outputFile, numberofLinesInFile);
+				numberofLinesInFile++;
 			}
 		}
 
-			for (auto & it : holiday) {
-				if (maxPrize >= (it.getAutocarPrize() + it.getHolidayPrize()  )  || maxPrize > (it.getPlanePrize() + it.getHolidayPrize()) && toDataValidation(it) == true) {
-					std::cout << "Holidays: " << endl;
-					cout << it << endl;
-				}
+		for (auto & it : trip) {
+			if (maxPrize >= it.getPrize() && toDateValidation(it) == true && countTripDuration(it) <= duration) {
+				std::cout << "Trips: " << endl;
+				cout << it << endl;
+				it.toOutputFile(outputFile, numberofLinesInFile);
+				numberofLinesInFile++;
+			}
 		}
+
 		break;
 
 	default:
 		cout << "Wrong parameters. ::exit the program" << endl;
-		//::exit(1);
+		::exit(1);
 		break;
 	}
-	
-	
-	
+
+
+
 }
 
-int MainClass::stringToInt(string s)
+
+
+int MainClass::stringToInt(string s) // to get prize from e.g 2000PLN
 {
 	int d;
 	istringstream iss(s);
 	string t;
 	while (getline(iss, t, 'P')) {// skip char 'P' 
 		try {
-			
+
 			stoi(t);
-			
+
 		}
 		catch (std::invalid_argument&) {
 			continue;
 		}
 		d = stoi(t);
-		cout << "d=" << d << endl;
+		
 	}
-	
+
 	return  d;
 }
 
@@ -529,7 +646,7 @@ int MainClass::PrizeToInt(string s)
 	iss.str(t);
 	while (getline(iss, t, 'P')) {// skip char 'P' 
 		try {
-			
+
 			stoi(t);
 
 		}
@@ -537,10 +654,12 @@ int MainClass::PrizeToInt(string s)
 			continue;
 		}
 		d = stoi(t);
-		
+
 	}
 
 	return  d;
-	
+
 }
+
+
 

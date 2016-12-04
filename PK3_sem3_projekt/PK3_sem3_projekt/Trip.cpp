@@ -12,7 +12,7 @@ Trip::Trip()
 	day_end = 0;
 	month_end = 0;
 	year_end = 0;
-	prize= 0;
+	prize = 0;
 }
 
 
@@ -78,27 +78,27 @@ void Trip::setPlaceToVisit(string s)
 	place = s;
 	istringstream iss(s);
 	istringstream iss_temp;
-	string t="";
+	string t = "";
 	string d = "";
 	while (getline(iss, t, ',')) {
 		iss_temp.clear();
 		iss_temp.str(t);
-			
-			iss_temp >> d;
-			countryToVisit.push_back(d);
-			iss_temp >> d;
-			d.erase(0, 1); // erase '['
-			d.erase(d.size()-1, 1); // erase ']'
-			cityToVisit.push_back(d);
-			
+
+		iss_temp >> d;
+		cityToVisit.push_back(d);
+		iss_temp >> d;
+		d.erase(0, 1); // erase '['
+		d.erase(d.size() - 1, 1); // erase ']'
+		countryToVisit.push_back(d);
 
 
-		
-		
-		
+
+
+
+
 	}
 
-	
+
 
 }
 
@@ -142,13 +142,77 @@ int Trip::getPrize()
 	return prize;
 }
 
+string Trip::getLastCountry()
+{
+	return countryToVisit.back(); //return last element
+}
+
+bool Trip::operator<(Holidays & a)
+{
+	if (this->getLastCountry().compare(a.getCountry()) == 0) {
+
+		//cout << "countries=" << this->getLastCountry() << " " << a.getCountry() << endl;
+		if (year_end < a.getYearStart()) return true; //poprawic warunek
+		if (year_end == a.getYearStart() && month_end <= a.getMonthStart() && day_end <= a.getDayStart()) return true;
+
+
+	}
+
+	else {
+		//cout << "countries=" << this->getLastCountry() << " " << a.getCountry() << endl;
+		/*cout << "countries=" << this->getLastCountry() << " " << a.getCountry() << endl;*/
+		return false;
+	}
+	return false;
+}
+
 ostream & operator<<(ostream & out, Trip & a)
 {
 	out << a.name << endl;
 	out << a.year_start << "." << a.month_start << "." << a.day_start << endl;
+	out << a.year_end << "." << a.month_end << "." << a.day_end << endl;
 	out << a.place << endl;
 	out << "prize: " << a.prize << endl;
 	out << "transport: " << a.transport << endl;
 	return out;
+}
+
+
+void Trip::toOutputFile(string filename, int lines)
+{
+
+	if (lines == 1) { // clear file
+
+		std::ofstream outFile(filename, std::ofstream::trunc);
+		if (!outFile.is_open()) {
+			cout << "error" << endl;
+			exit(1);
+		}
+		outFile.close();
+	}
+
+	std::ofstream outFile(filename, std::ofstream::out | std::ofstream::app);
+	if (!outFile.is_open()) {
+		cout << "error" << endl;
+		exit(1);
+	}
+
+	else {
+		outFile << lines << ". " << name << " (" << transport << " )" << endl;
+		outFile << "Kraje: ";
+		for (auto p : countryToVisit) {
+			outFile << p << " ";
+		}
+		outFile << endl << "Miejscowosci: ";
+
+		for (auto p : cityToVisit) {
+			outFile << p << " ";
+		}
+		outFile << endl << "Koszt: " << prize << endl;
+		outFile << "Termin: " << year_start << "." << month_start << "." << day_start << "-";
+		outFile << year_end << "." << month_end << "." << day_end << endl;
+
+		outFile.close();
+	}
 }
 
